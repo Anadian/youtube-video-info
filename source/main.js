@@ -1,5 +1,11 @@
 #!/usr/local/bin/node
 'use strict';
+/**
+* @file youtube-video-info.js
+* @brief Get basic, permanent info for the given URL of a YouTube video.
+* @author Anadian
+* @copyright MITlicensetm(2019,Canosw)
+*/
 
 //Dependencies
 	//Internal
@@ -8,7 +14,6 @@
 	const Utility = require('util');
 	//External
 	const RequestPromiseNative = require('request-promise-native');
-
 
 //Constants
 const FILENAME = 'youtube-video-info.js';
@@ -20,8 +25,29 @@ if(require.main === module){
 	PROCESS_NAME = process.argv0;
 }
 
+//Global Variables
 var Logger = null;
+//Functions
+function Logger_Set( logger ){
+	var _return = [1,null];
+	const FUNCTION_NAME = 'Logger_Set';
+	//Variables
+	var function_return = [1,null];
 
+	//Parametre checks
+	if( logger == undefined || typeof(logger) !== 'object' ){
+		_return = [-2,'Error: param "logger" is either null or not an object.'];
+	}
+
+	//Function
+	if( _return[0] === 1 ){
+		Logger = logger;
+		_return = [0,null];
+	}
+
+	//Return
+	return _return;
+}
 
 /**
 * @fn Request_Async
@@ -286,11 +312,10 @@ async function Main_YouTubeVideoInfoMarkdown_STDOUT_From_URL_Async( url ){
 	Logger.log({process: PROCESS_NAME, module: MODULE_NAME, file: FILENAME, function: FUNCTION_NAME, level: 'debug', message: Utility.format('returned: %o', _return)});
 	return _return;
 }
-
-
-if( require.main === module ){
+//Exports and Execution
+if(require.main === module){
 	var _return = [1,null];
-	const FUNCTION_NAME = 'MainExecutionBlock';
+	const FUNCTION_NAME = 'MainExecutionFunction';
 	//Dependencies
 		//Internal
 		const ApplicationLogStandard = require('./application-log-standard.js');
@@ -298,7 +323,8 @@ if( require.main === module ){
 		//External
 		const Winston = require('winston');
 		const LogForm = require('logform');
-	Logger = Winston.createLogger({
+	//Constants
+	Logger_Set( Winston.createLogger({
 		level: 'debug',
 		levels: ApplicationLogStandard.levels,
 		transports: [
@@ -332,18 +358,19 @@ if( require.main === module ){
 			maxFiles: 4
 		})
 	]
-	});
+	}) );
 	//Variables
 	var function_return = [1,null];
+	//Logger
+	//Options
 	if( process.argv.length > 2 ){
 		var url_array = process.argv.slice(2);
 		URLArray_To_Files( url_array );
 		Main_YouTubeVideoInfoMarkdown_STDOUT_From_URL_Async( process.argv[2] );
 	}
+	//Config
+	//Main
+} else{
+	
 }
-
-
-
-
-
 
